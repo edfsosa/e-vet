@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Owner extends Model
 {
@@ -34,5 +35,9 @@ class Owner extends Model
     public function neighborhood(): BelongsTo
     {
         return $this->belongsTo(Neighborhood::class);
+    }
+    public function pets(): HasMany
+    {
+        return $this->hasMany(Pet::class);
     }
 }

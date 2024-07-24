@@ -36,18 +36,22 @@ class OwnerResource extends Resource
                         Forms\Components\TextInput::make('ci')
                             ->required()
                             ->integer()
-                            ->minValue(1),
+                            ->minValue(1)
+                            ->unique(),
                         Forms\Components\TextInput::make('first_name')
-                            ->required(),
+                            ->required()
+                            ->string(),
                         Forms\Components\TextInput::make('last_name')
-                            ->required(),
-                        Forms\Components\Select::make('gender')
+                            ->required()
+                            ->string(),
+                            Forms\Components\Radio::make('gender')
                             ->required()
                             ->options([
                                 'Male' => 'Male',
                                 'Female' => 'Female',
                             ])
-                            ->native(false),
+                            ->inline()
+                            ->inlineLabel(false),
                         Forms\Components\TextInput::make('email')
                             ->email()
                             ->required(),
@@ -152,7 +156,7 @@ class OwnerResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\PetsRelationManager::class,
         ];
     }
 
