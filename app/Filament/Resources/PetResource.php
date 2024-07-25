@@ -50,7 +50,6 @@ class PetResource extends Resource
                             ->inlineLabel(false),
                         Forms\Components\DatePicker::make('birthdate')
                             ->required()
-                            ->format('d/m/Y')
                             ->native(false)
                             ->maxDate(now()),
                     ]),
@@ -94,8 +93,8 @@ class PetResource extends Resource
                             ->uploadingMessage('Subiendo archivo adjunto...')
                             ->required(),
                         Forms\Components\Select::make('owner_id')
-                            ->relationship('owner', 'ci')
-                            ->searchable()
+                            ->relationship('owner', 'full_name')
+                            ->searchable(['full_name', 'ci'])
                             ->preload()
                             ->live()
                             ->required(),
@@ -179,7 +178,7 @@ class PetResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\VaccinationsRelationManager::class,
         ];
     }
 
