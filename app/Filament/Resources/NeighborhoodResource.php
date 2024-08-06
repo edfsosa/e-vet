@@ -26,11 +26,11 @@ class NeighborhoodResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required(),
-                Forms\Components\TextInput::make('city_id')
-                    /* ->relationship('city', 'name')
+                Forms\Components\Select::make('city_id')
+                    ->relationship('city', 'name')
                     ->searchable()
                     ->preload()
-                    ->live() */
+                    ->live()
                     ->required(),
             ]);
     }

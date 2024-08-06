@@ -29,11 +29,11 @@ class CityResource extends Resource
                 Forms\Components\TextInput::make('population')
                     ->integer()
                     ->minValue(1),
-                Forms\Components\TextInput::make('department_id')
-/*                     ->relationship('department', 'name')
+                Forms\Components\Select::make('department_id')
+                    ->relationship('department', 'name')
                     ->searchable()
                     ->preload()
-                    ->live() */
+                    ->live()
                     ->required(),
             ]);
     }
