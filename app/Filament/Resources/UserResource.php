@@ -122,7 +122,8 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\PetsRelationManager::class,
+            RelationManagers\VaccinationsRelationManager::class,
         ];
     }
 
