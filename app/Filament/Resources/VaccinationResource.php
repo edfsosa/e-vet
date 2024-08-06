@@ -54,8 +54,7 @@ class VaccinationResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->searchable()
-                    ->sortable()
-                    ->numeric(),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('vaccine')
                     ->searchable()
                     ->sortable(),

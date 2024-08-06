@@ -72,7 +72,7 @@ class PetResource extends Resource
                             ->required()
                             ->numeric()
                             ->inputMode('decimal')
-                            ->minValue(0, 1)
+                            ->minValue(0.1)
                             ->maxValue(150),
                         Forms\Components\TextInput::make('fur')
                             ->required(),

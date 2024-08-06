@@ -24,13 +24,17 @@ class CityResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('department_id')
-                    ->required()
-                    ->numeric(),
                 Forms\Components\TextInput::make('name')
                     ->required(),
                 Forms\Components\TextInput::make('population')
-                    ->numeric(),
+                    ->integer()
+                    ->minValue(1),
+                Forms\Components\TextInput::make('department_id')
+/*                     ->relationship('department', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->live() */
+                    ->required(),
             ]);
     }
 
@@ -38,13 +42,17 @@ class CityResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('department_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('id')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('population')
                     ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('department.name')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

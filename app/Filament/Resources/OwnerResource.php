@@ -96,6 +96,9 @@ class OwnerResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('ci')
                     ->sortable()
                     ->searchable()

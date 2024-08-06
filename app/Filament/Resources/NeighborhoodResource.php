@@ -24,10 +24,13 @@ class NeighborhoodResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('city_id')
-                    ->required()
-                    ->numeric(),
                 Forms\Components\TextInput::make('name')
+                    ->required(),
+                Forms\Components\TextInput::make('city_id')
+                    /* ->relationship('city', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->live() */
                     ->required(),
             ]);
     }
@@ -36,11 +39,15 @@ class NeighborhoodResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('city_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('id')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('city.name')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
