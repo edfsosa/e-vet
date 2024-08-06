@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateNeighborhood extends CreateRecord
 {
     protected static string $resource = NeighborhoodResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }
