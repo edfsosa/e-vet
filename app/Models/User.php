@@ -74,4 +74,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Vaccination::class);
     }
+
+    public function consultations(): HasMany
+    {
+        return $this->hasMany(Consultation::class);
+    }
 }
