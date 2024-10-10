@@ -9,6 +9,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class ConsultationsRelationManager extends RelationManager
 {
@@ -46,6 +47,10 @@ class ConsultationsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('treatment')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -61,7 +66,7 @@ class ConsultationsRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->mutateFormDataUsing(function (array $data): array {
-                        $data['user_id'] = auth()->id();
+                        $data['user_id'] = Auth::id();
                         return $data;
                     }),
             ])

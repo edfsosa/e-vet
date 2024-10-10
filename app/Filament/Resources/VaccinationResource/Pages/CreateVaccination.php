@@ -5,6 +5,7 @@ namespace App\Filament\Resources\VaccinationResource\Pages;
 use App\Filament\Resources\VaccinationResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Facades\Auth;
 
 class CreateVaccination extends CreateRecord
 {
@@ -17,7 +18,7 @@ class CreateVaccination extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['user_id'] = auth()->id();
+        $data['user_id'] = Auth::id();
 
         return $data;
     }

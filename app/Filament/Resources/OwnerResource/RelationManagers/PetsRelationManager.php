@@ -10,6 +10,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class PetsRelationManager extends RelationManager
 {
@@ -156,7 +157,7 @@ class PetsRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->mutateFormDataUsing(function (array $data): array {
-                        $data['user_id'] = auth()->id();
+                        $data['user_id'] = Auth::id();
                         return $data;
                     }),
             ])
