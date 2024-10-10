@@ -179,6 +179,7 @@ class PetResource extends Resource
     {
         return [
             RelationManagers\VaccinationsRelationManager::class,
+            RelationManagers\ConsultationsRelationManager::class,
         ];
     }
 
