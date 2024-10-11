@@ -46,4 +46,9 @@ class Pet extends Model
     {
         return $this->hasMany(Consultation::class);
     }
+
+    public function surgeries(): HasMany
+    {
+        return $this->hasMany(Surgery::class);
+    }
 }
