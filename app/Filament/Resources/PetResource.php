@@ -181,6 +181,7 @@ class PetResource extends Resource
             RelationManagers\VaccinationsRelationManager::class,
             RelationManagers\ConsultationsRelationManager::class,
             RelationManagers\SurgeriesRelationManager::class,
+            RelationManagers\TestsRelationManager::class,
         ];
     }
 

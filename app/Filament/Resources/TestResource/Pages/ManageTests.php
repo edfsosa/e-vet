@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Filament\Resources\SurgeryResource\Pages;
+namespace App\Filament\Resources\TestResource\Pages;
 
-use App\Filament\Resources\SurgeryResource;
+use App\Filament\Resources\TestResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 use Illuminate\Support\Facades\Auth;
 
-class ManageSurgeries extends ManageRecords
+class ManageTests extends ManageRecords
 {
-    protected static string $resource = SurgeryResource::class;
+    protected static string $resource = TestResource::class;
 
     protected function getHeaderActions(): array
     {
@@ -18,7 +18,7 @@ class ManageSurgeries extends ManageRecords
                 ->mutateFormDataUsing(function (array $data): array {
                     $data['user_id'] = Auth::id();
                     return $data;
-                })
+                }),
         ];
     }
 }

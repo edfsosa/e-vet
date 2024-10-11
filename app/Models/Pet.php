@@ -51,4 +51,9 @@ class Pet extends Model
     {
         return $this->hasMany(Surgery::class);
     }
+
+    public function tests(): HasMany
+    {
+        return $this->hasMany(Test::class);
+    }
 }
