@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class SurgeryResource extends Resource
 {
     protected static ?string $model = Surgery::class;
-
+    protected static ?string $navigationGroup = 'Procedures';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
