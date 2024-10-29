@@ -10,20 +10,38 @@ class Test extends Model
 {
     use HasFactory;
 
+    /**
+     * Los atributos que se pueden asignar masivamente.
+     * Estos campos se pueden rellenar directamente al crear o actualizar un examen.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
-        'date',
-        'type',
-        'result',
-        'observation',
-        'pet_id',
-        'user_id',
+        'date', // Fecha del examen
+        'type', // Tipo de examen realizado
+        'result', // Resultado del examen
+        'observation', // Observaciones adicionales sobre el examen
+        'pet_id', // ID de la mascota a la que se le realizó el examen
+        'user_id', // ID del veterinario que realizó el examen
     ];
 
+    /**
+     * Un examen pertenece a una mascota.
+     * Esta relación define que cada examen está asociado con una mascota específica.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function pet(): BelongsTo
     {
         return $this->belongsTo(Pet::class);
     }
 
+    /**
+     * Un examen pertenece a un usuario (veterinario).
+     * Esta relación define que cada examen está asociado con un veterinario específico.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

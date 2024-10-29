@@ -19,13 +19,13 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'department_id',
-        'city_id',
-        'neighborhood_id',
-        'address',
+        'name', // Nombre del usuario
+        'email', // Correo electrónico del usuario
+        'password', // Contraseña del usuario
+        'department_id', // ID del departamento de residencia
+        'city_id', // ID de la ciudad de residencia
+        'neighborhood_id', // ID del barrio de residencia
+        'address', // Dirección de residencia
     ];
 
     /**
@@ -51,15 +51,34 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Un usuario pertenece a un departamento.
+     * Esta relación define que cada usuario está asociado con un departamento específico.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function department(): BelongsTo
     {
         return $this->belongsTo(Department::class);
     }
 
+    /**
+     * Un usuario pertenece a una ciudad.
+     * Esta relación define que cada usuario está asociado con una ciudad específica.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
     }
+
+    /**
+     * Un usuario pertenece a un barrio.
+     * Esta relación define que cada usuario está asociado con un barrio específico.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function neighborhood(): BelongsTo
     {
         return $this->belongsTo(Neighborhood::class);
@@ -89,5 +108,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Test::class);
     }
-
 }

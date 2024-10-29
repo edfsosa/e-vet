@@ -10,20 +10,38 @@ class Consultation extends Model
 {
     use HasFactory;
 
+    /**
+     * Los atributos que se pueden asignar masivamente.
+     * Estos campos se pueden rellenar directamente al crear o actualizar una consulta.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
-        'anamnesis',
-        'diagnosis',
-        'treatment',
-        'observation',
-        'pet_id',
-        'user_id',
+        'anamnesis', // Historia clínica del paciente
+        'diagnosis', // Diagnóstico del paciente
+        'treatment', // Tratamiento prescrito
+        'observation', // Observaciones adicionales
+        'pet_id', // ID de la mascota asociada a la consulta
+        'user_id', // ID del usuario (veterinario) que creó la consulta
     ];
 
+    /**
+     * Una consulta pertenece a una mascota.
+     * Esta relación define que cada consulta está asociada con una mascota específica.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function pet(): BelongsTo
     {
         return $this->belongsTo(Pet::class);
     }
 
+    /**
+     * Una consulta pertenece a un usuario (veterinario).
+     * Esta relación define que cada consulta está asociada con un veterinario específico.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

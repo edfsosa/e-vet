@@ -9,21 +9,21 @@ use Illuminate\Console\Command;
 class SendVaccinationNotifications extends Command
 {
     /**
-     * The name and signature of the console command.
+     * El nombre y la firma del comando de consola..
      *
      * @var string
      */
     protected $signature = 'send:vaccination-notifications';
 
     /**
-     * The console command description.
+     * Descripción del comando de consola.
      *
      * @var string
      */
     protected $description = 'Sends vaccination reminders to pet owners';
 
     /**
-     * Execute the console command.
+     * Ejecutar el comando de consola.
      */
     public function handle()
     {
@@ -31,9 +31,10 @@ class SendVaccinationNotifications extends Command
         $vaccinations = Vaccination::where('next_application', '<=', now()->addDays(3))->get();
 
         foreach ($vaccinations as $vaccination) {
+            // Obtener el dueño de la mascota que recibió la vacunación
             $owner = $vaccination->pet->owner;
 
-            // Enviar el correo
+            // Enviar una notificación al dueño sobre la vacunación realizada
             $owner->notify(new VaccinationNotification($vaccination));
         }
     }

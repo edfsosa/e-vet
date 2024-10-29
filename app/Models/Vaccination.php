@@ -10,22 +10,38 @@ class Vaccination extends Model
 {
     use HasFactory;
 
+    /**
+     * Los atributos que se pueden asignar masivamente.
+     * Estos campos se pueden rellenar directamente al crear o actualizar una consulta.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
-        'vaccine',
-        'application_date',
-        'next_application',
-        'batch',
-        'manufacturer',
-        'observation',
-        'pet_id',
-        'user_id',
+        'vaccine', // Nombre de la vacuna aplicada
+        'application_date', // Fecha de aplicación de la vacuna
+        'next_application', // Fecha de la próxima aplicación de la vacuna
+        'batch', // Número de lote de la vacuna
+        'manufacturer', // Fabricante de la vacuna
+        'observation', // Observaciones adicionales sobre la vacunación
+        'pet_id', // ID de la mascota a la que se aplicó la vacuna
+        'user_id', // ID del veterinario que aplicó la vacuna
     ];
 
+    /**
+     * Una vacunación pertenece a una mascota.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function pet(): BelongsTo
     {
         return $this->belongsTo(Pet::class);
     }
 
+    /**
+     * Una vacunación pertenece a un usuario (veterinario).
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
