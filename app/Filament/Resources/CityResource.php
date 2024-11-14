@@ -16,24 +16,31 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class CityResource extends Resource
 {
     protected static ?string $model = City::class;
-    protected static ?string $navigationGroup = 'System Management';
+    protected static ?string $navigationGroup = 'Gestión del sistema';
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
     protected static ?int $navigationSort = 4;
+    protected static ?string $modelLabel = 'ciudad';
+    protected static ?string $pluralModelLabel = 'ciudades';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->translateLabel()
                     ->required(),
                 Forms\Components\TextInput::make('population')
+                    ->translateLabel()
                     ->integer()
-                    ->minValue(1),
+                    ->minValue(1)
+                    ->required(),
                 Forms\Components\Select::make('department_id')
                     ->relationship('department', 'name')
                     ->searchable()
                     ->preload()
                     ->live()
+                    ->label(__('Department'))
+                    ->translateLabel()
                     ->required(),
             ]);
     }
@@ -43,22 +50,30 @@ class CityResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('population')
+                    ->translateLabel()
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('department.name')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('Created'))
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('Updated'))
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

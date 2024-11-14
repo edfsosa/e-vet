@@ -16,17 +16,21 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class DepartmentResource extends Resource
 {
     protected static ?string $model = Department::class;
-    protected static ?string $navigationGroup = 'System Management';
+    protected static ?string $navigationGroup = 'Gestión del sistema';
     protected static ?string $navigationIcon = 'heroicon-o-building-library';
     protected static ?int $navigationSort = 3;
+    protected static ?string $modelLabel = 'departamento';
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->translateLabel()
                     ->required(),
                 Forms\Components\TextInput::make('capital')
+                    ->translateLabel()
                     ->required(),
             ]);
     }
@@ -36,19 +40,26 @@ class DepartmentResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('capital')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('Created'))
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('Updated'))
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

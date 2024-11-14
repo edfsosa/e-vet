@@ -13,12 +13,14 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class NeighborhoodsRelationManager extends RelationManager
 {
     protected static string $relationship = 'neighborhoods';
+    protected static ?string $modelLabel = 'barrio';
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->translateLabel()
                     ->required(),
             ]);
     }
@@ -27,11 +29,14 @@ class NeighborhoodsRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('name')
+            ->heading(__('Neighborhoods'))
             ->columns([
                 Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
             ])

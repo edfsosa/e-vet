@@ -10,8 +10,8 @@ class CreateNeighborhood extends CreateRecord
 {
     protected static string $resource = NeighborhoodResource::class;
 
-    protected function getRedirectUrl(): string
+    protected function getCreatedNotificationTitle(): ?string
     {
-        return $this->getResource()::getUrl('index');
+        return __('Neighborhood registered');
     }
 }

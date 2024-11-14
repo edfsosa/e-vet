@@ -10,8 +10,8 @@ class CreateCity extends CreateRecord
 {
     protected static string $resource = CityResource::class;
 
-    protected function getRedirectUrl(): string
+    protected function getCreatedNotificationTitle(): ?string
     {
-        return $this->getResource()::getUrl('index');
+        return __('City registered');
     }
 }
