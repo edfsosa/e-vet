@@ -10,8 +10,8 @@ class CreateOwner extends CreateRecord
 {
     protected static string $resource = OwnerResource::class;
 
-    protected function getRedirectUrl(): string
+    protected function getCreatedNotificationTitle(): ?string
     {
-        return $this->getResource()::getUrl('index');
+        return __('Owner registered');
     }
 }

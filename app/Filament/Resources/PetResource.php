@@ -18,9 +18,8 @@ use Filament\Tables\Columns\Layout\Split;
 class PetResource extends Resource
 {
     protected static ?string $model = Pet::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    protected static ?string $modelLabel = 'mascota';
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Form $form): Form
@@ -28,64 +27,90 @@ class PetResource extends Resource
         return $form
             ->schema([
 
-                Section::make('ID info')
+                Section::make(__('ID information'))
                     ->columns(2)
                     ->schema([
                         Forms\Components\TextInput::make('id')
+                            ->label('ID')
                             ->hiddenOn('create')
                             ->readOnly(),
                         Forms\Components\TextInput::make('name')
+                            ->translateLabel()
+                            ->string()
                             ->required(),
-                        Forms\Components\TextInput::make('species')
+                        Forms\Components\Select::make('species')
+                            ->translateLabel()
+                            ->searchable()
+                            ->preload()
+                            ->live()
+                            ->options([
+                                'Canino' => __('Canine'),
+                                'Felino' => __('Feline'),
+                                'Roedor' => __('Rodent'),
+                                'Ave' => __('Bird'),
+                                'Equino' => __('Equine'),
+                                'Bovino' => __('Bovine'),
+                                'Pez' => __('Fish'),
+                                'Reptil' => __('Reptile'),
+                            ])
                             ->required(),
                         Forms\Components\TextInput::make('breed')
+                            ->translateLabel()
+                            ->string()
                             ->required(),
                         Forms\Components\Radio::make('gender')
+                            ->translateLabel()
                             ->required()
                             ->options([
-                                'Male' => 'Male',
-                                'Female' => 'Female',
+                                'Male' => 'Macho',
+                                'Female' => 'Hembra',
                             ])
                             ->inline()
                             ->inlineLabel(false),
                         Forms\Components\DatePicker::make('birthdate')
+                            ->translateLabel()
                             ->required()
                             ->native(false)
                             ->maxDate(now()),
                     ]),
 
-                Section::make('More info')
+                Section::make(__('More information'))
                     ->columns(2)
                     ->schema([
                         Forms\Components\Radio::make('size')
+                            ->translateLabel()
                             ->required()
                             ->options([
-                                'Giant' => 'Giant',
-                                'Big' => 'Big',
-                                'Medium' => 'Medium',
-                                'Small' => 'Small',
-                                'Tiny' => 'Tiny',
+                                'Giant' => __('Giant'),
+                                'Big' => __('Big'),
+                                'Medium' => __('Medium'),
+                                'Small' => __('Small'),
+                                'Tiny' => __('Tiny'),
                             ])
                             ->inline()
                             ->inlineLabel(false),
                         Forms\Components\TextInput::make('weight')
+                            ->translateLabel()
                             ->required()
                             ->numeric()
                             ->inputMode('decimal')
                             ->minValue(0.1)
                             ->maxValue(150),
                         Forms\Components\TextInput::make('fur')
+                            ->label(__('Pelage'))
                             ->required(),
                         Forms\Components\Radio::make('reproduction')
+                            ->translateLabel()
                             ->required()
                             ->options([
-                                'Normal' => 'Normal',
-                                'Castrated' => 'Castrated',
-                                'Sterilized' => 'Sterilized',
+                                'Normal' => __('Normal'),
+                                'Castrated' => __('Castrated'),
+                                'Sterilized' => __('Sterilized'),
                             ])
                             ->inline()
                             ->inlineLabel(false),
                         Forms\Components\FileUpload::make('image')
+                            ->translateLabel()
                             ->image()
                             ->imageEditor()
                             ->downloadable()
@@ -93,12 +118,14 @@ class PetResource extends Resource
                             ->uploadingMessage('Subiendo archivo adjunto...')
                             ->required(),
                         Forms\Components\Select::make('owner_id')
+                            ->translateLabel()
                             ->relationship('owner', 'full_name')
                             ->searchable(['full_name', 'ci'])
                             ->preload()
                             ->live()
                             ->required(),
                         Forms\Components\Toggle::make('active')
+                            ->translateLabel()
                             ->hiddenOn('create')
                             ->onColor('success')
                             ->offColor('danger')
