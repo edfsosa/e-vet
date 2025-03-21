@@ -28,7 +28,7 @@ class PetResource extends Resource
             ->schema([
 
                 Section::make(__('ID information'))
-                    ->columns(2)
+                    ->columns(3)
                     ->schema([
                         Forms\Components\TextInput::make('id')
                             ->label('ID')
@@ -58,6 +58,12 @@ class PetResource extends Resource
                             ->translateLabel()
                             ->string()
                             ->required(),
+                        Forms\Components\DatePicker::make('birthdate')
+                            ->translateLabel()
+                            ->required()
+                            ->native(false)
+                            ->minDate(now()->subYears(25))
+                            ->maxDate(now()),
                         Forms\Components\Radio::make('gender')
                             ->translateLabel()
                             ->required()
@@ -67,19 +73,16 @@ class PetResource extends Resource
                             ])
                             ->inline()
                             ->inlineLabel(false),
-                        Forms\Components\DatePicker::make('birthdate')
-                            ->translateLabel()
-                            ->required()
-                            ->native(false)
-                            ->maxDate(now()),
                     ]),
 
                 Section::make(__('More information'))
-                    ->columns(2)
+                    ->columns(3)
                     ->schema([
-                        Forms\Components\Radio::make('size')
+                        Forms\Components\Select::make('size')
                             ->translateLabel()
-                            ->required()
+                            ->searchable()
+                            ->preload()
+                            ->live()
                             ->options([
                                 'Giant' => __('Giant'),
                                 'Big' => __('Big'),
@@ -87,10 +90,10 @@ class PetResource extends Resource
                                 'Small' => __('Small'),
                                 'Tiny' => __('Tiny'),
                             ])
-                            ->inline()
-                            ->inlineLabel(false),
+                            ->required(),
                         Forms\Components\TextInput::make('weight')
                             ->translateLabel()
+                            ->suffix('kg')
                             ->required()
                             ->numeric()
                             ->inputMode('decimal')
@@ -98,6 +101,7 @@ class PetResource extends Resource
                             ->maxValue(150),
                         Forms\Components\TextInput::make('fur')
                             ->label(__('Pelage'))
+                            ->string()
                             ->required(),
                         Forms\Components\Radio::make('reproduction')
                             ->translateLabel()
@@ -109,14 +113,6 @@ class PetResource extends Resource
                             ])
                             ->inline()
                             ->inlineLabel(false),
-                        Forms\Components\FileUpload::make('image')
-                            ->translateLabel()
-                            ->image()
-                            ->imageEditor()
-                            ->downloadable()
-                            ->columnSpanFull()
-                            ->uploadingMessage('Subiendo archivo adjunto...')
-                            ->required(),
                         Forms\Components\Select::make('owner_id')
                             ->translateLabel()
                             ->relationship('owner', 'full_name')
@@ -125,11 +121,19 @@ class PetResource extends Resource
                             ->live()
                             ->required(),
                         Forms\Components\Toggle::make('active')
-                            ->translateLabel()
+                            ->label(__('Active'))
                             ->hiddenOn('create')
                             ->onColor('success')
                             ->offColor('danger')
                             ->inline(false),
+                        Forms\Components\FileUpload::make('image')
+                            ->translateLabel()
+                            ->image()
+                            ->imageEditor()
+                            ->downloadable()
+                            ->columnSpanFull()
+                            ->uploadingMessage('Subiendo archivo adjunto...')
+                            ->required(),
                     ])
             ]);
     }
@@ -139,17 +143,22 @@ class PetResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
+                    ->translateLabel()
                     ->circular(),
                 Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('species')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('breed')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
                 /* Tables\Columns\TextColumn::make('gender')
@@ -172,6 +181,7 @@ class PetResource extends Resource
                         ->searchable()
                         ->sortable(), */
                 Tables\Columns\IconColumn::make('active')
+                    ->label('Activo')
                     ->boolean()
                     ->sortable(),
                 /* Tables\Columns\TextColumn::make('owner.ci')
@@ -194,6 +204,7 @@ class PetResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

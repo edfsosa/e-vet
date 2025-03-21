@@ -14,48 +14,68 @@ use Illuminate\Support\Facades\Auth;
 class ConsultationsRelationManager extends RelationManager
 {
     protected static string $relationship = 'consultations';
+    protected static ?string $modelLabel = 'consulta';
+    protected static ?string $title = 'Consultas';
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Textarea::make('anamnesis')
+                    ->translateLabel()
+                    ->columnSpanFull()
+                    ->autosize()
                     ->required(),
                 Forms\Components\Textarea::make('diagnosis')
+                    ->translateLabel()
+                    ->columnSpanFull()
+                    ->autosize()
                     ->required(),
                 Forms\Components\Textarea::make('treatment')
+                    ->translateLabel()
+                    ->columnSpanFull()
+                    ->autosize()
                     ->required(),
                 Forms\Components\Textarea::make('observation')
+                    ->translateLabel()
+                    ->columnSpanFull()
+                    ->autosize()
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('anamnesis')
             ->columns([
                 Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
                     ->searchable()
                     ->sortable()
                     ->numeric(),
-                Tables\Columns\TextColumn::make('anamnesis')
+                /* Tables\Columns\TextColumn::make('anamnesis')
+                    ->translateLabel()
                     ->searchable()
-                    ->sortable(),
+                    ->sortable(), */
                 Tables\Columns\TextColumn::make('diagnosis')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('treatment')
+                /* Tables\Columns\TextColumn::make('treatment')
+                    ->translateLabel()
                     ->searchable()
-                    ->sortable(),
+                    ->sortable(), */
                 Tables\Columns\TextColumn::make('user.name')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

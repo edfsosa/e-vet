@@ -1,1 +1,1 @@
-Proyecto "E-Vet" para gestión de HCE en la clínica "Eirevet"
+Proyecto "E-Vet" para gestión clínica en la veterinaria "Eirevet" de Areguá, Paraguay.

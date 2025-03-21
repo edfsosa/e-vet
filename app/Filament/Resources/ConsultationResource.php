@@ -18,25 +18,31 @@ class ConsultationResource extends Resource
     protected static ?string $model = Consultation::class;
     protected static ?string $navigationGroup = 'Procedures';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $modelLabel = 'consulta';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('pet_id')
-                    ->relationship('pet', 'name')
-                    ->searchable(['name', 'id'])
-                    ->preload()
-                    ->live()
-                    ->required(),
                 Forms\Components\Textarea::make('anamnesis')
+                    ->translateLabel()
+                    ->columnSpanFull()
+                    ->autosize()
                     ->required(),
                 Forms\Components\Textarea::make('diagnosis')
+                    ->translateLabel()
+                    ->columnSpanFull()
+                    ->autosize()
                     ->required(),
                 Forms\Components\Textarea::make('treatment')
+                    ->translateLabel()
+                    ->columnSpanFull()
+                    ->autosize()
                     ->required(),
                 Forms\Components\Textarea::make('observation')
+                    ->translateLabel()
                     ->columnSpanFull()
+                    ->autosize()
             ]);
     }
 
@@ -45,15 +51,22 @@ class ConsultationResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('anamnesis')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('pet.name')
+                    ->label('ID')
                     ->searchable()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->numeric(),
+                Tables\Columns\TextColumn::make('pet.name')
+                    ->translateLabel()
+                    ->searchable()
+                    ->sortable(),
+                /* Tables\Columns\TextColumn::make('anamnesis')
+                    ->translateLabel()
+                    ->searchable()
+                    ->sortable(), */
+                Tables\Columns\TextColumn::make('diagnosis')
+                    ->translateLabel()
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
                     ->sortable()

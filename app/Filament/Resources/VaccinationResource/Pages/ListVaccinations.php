@@ -10,10 +10,4 @@ class ListVaccinations extends ListRecords
 {
     protected static string $resource = VaccinationResource::class;
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
-    }
 }

@@ -15,71 +15,102 @@ use Illuminate\Support\Facades\Auth;
 class PetsRelationManager extends RelationManager
 {
     protected static string $relationship = 'pets';
+    protected static ?string $modelLabel = 'mascota';
+    protected static ?string $title = 'Mascotas asociadas';
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Section::make('ID info')
-                    ->columns(2)
+                Section::make(__('ID information'))
+                    ->columns(3)
                     ->schema([
                         Forms\Components\TextInput::make('id')
+                            ->label('ID')
                             ->hiddenOn('create')
                             ->readOnly(),
                         Forms\Components\TextInput::make('name')
+                            ->translateLabel()
+                            ->string()
                             ->required(),
-                        Forms\Components\TextInput::make('species')
+                        Forms\Components\Select::make('species')
+                            ->translateLabel()
+                            ->searchable()
+                            ->preload()
+                            ->live()
+                            ->options([
+                                'Canino' => __('Canine'),
+                                'Felino' => __('Feline'),
+                                'Roedor' => __('Rodent'),
+                                'Ave' => __('Bird'),
+                                'Equino' => __('Equine'),
+                                'Bovino' => __('Bovine'),
+                                'Pez' => __('Fish'),
+                                'Reptil' => __('Reptile'),
+                            ])
                             ->required(),
                         Forms\Components\TextInput::make('breed')
+                            ->translateLabel()
+                            ->string()
                             ->required(),
-                        Forms\Components\Radio::make('gender')
-                            ->required()
-                            ->options([
-                                'Male' => 'Male',
-                                'Female' => 'Female',
-                            ])
-                            ->inline()
-                            ->inlineLabel(false),
                         Forms\Components\DatePicker::make('birthdate')
+                            ->translateLabel()
                             ->required()
-                            ->format('d/m/Y')
                             ->native(false)
                             ->minDate(now()->subYears(25))
                             ->maxDate(now()),
-                    ]),
-
-                Section::make('More info')
-                    ->columns(2)
-                    ->schema([
-                        Forms\Components\Radio::make('size')
+                        Forms\Components\Radio::make('gender')
+                            ->translateLabel()
                             ->required()
                             ->options([
-                                'Giant' => 'Giant',
-                                'Big' => 'Big',
-                                'Medium' => 'Medium',
-                                'Small' => 'Small',
-                                'Tiny' => 'Tiny',
+                                'Male' => 'Macho',
+                                'Female' => 'Hembra',
                             ])
                             ->inline()
                             ->inlineLabel(false),
+                    ]),
+
+                Section::make(__('More information'))
+                    ->columns(3)
+                    ->schema([
+                        Forms\Components\Select::make('size')
+                            ->translateLabel()
+                            ->searchable()
+                            ->preload()
+                            ->live()
+                            ->options([
+                                'Giant' => __('Giant'),
+                                'Big' => __('Big'),
+                                'Medium' => __('Medium'),
+                                'Small' => __('Small'),
+                                'Tiny' => __('Tiny'),
+                            ])
+                            ->required(),
                         Forms\Components\TextInput::make('weight')
+                            ->translateLabel()
+                            ->suffix('kg')
                             ->required()
                             ->numeric()
                             ->inputMode('decimal')
-                            ->minValue(0, 1)
+                            ->minValue(0.1)
                             ->maxValue(150),
                         Forms\Components\TextInput::make('fur')
+                            ->label(__('Pelage'))
+                            ->string()
                             ->required(),
                         Forms\Components\Radio::make('reproduction')
+                            ->translateLabel()
                             ->required()
+                            ->columnSpanFull()
                             ->options([
-                                'Normal' => 'Normal',
-                                'Castrated' => 'Castrated',
-                                'Sterilized' => 'Sterilized',
+                                'Normal' => __('Normal'),
+                                'Castrated' => __('Castrated'),
+                                'Sterilized' => __('Sterilized'),
                             ])
                             ->inline()
                             ->inlineLabel(false),
                         Forms\Components\FileUpload::make('image')
+                            ->translateLabel()
                             ->image()
                             ->imageEditor()
                             ->downloadable()
@@ -87,6 +118,7 @@ class PetsRelationManager extends RelationManager
                             ->uploadingMessage('Subiendo archivo adjunto...')
                             ->required(),
                         Forms\Components\Toggle::make('active')
+                            ->translateLabel()
                             ->hiddenOn('create')
                             ->onColor('success')
                             ->offColor('danger')

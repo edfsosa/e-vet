@@ -14,59 +14,133 @@ use Illuminate\Support\Facades\Auth;
 class VaccinationsRelationManager extends RelationManager
 {
     protected static string $relationship = 'vaccinations';
+    protected static ?string $modelLabel = 'vacunación';
+    protected static ?string $title = 'Vacunaciones';
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('vaccine')
+                Forms\Components\Select::make('vaccine')
+                    ->translateLabel()
+                    ->searchable()
+                    ->preload()
+                    ->live()
+                    ->options([
+                        'Rabia' => __('Rabies'),
+                        'Moquillo' => __('Distemper'),
+                        'Parvovirus' => __('Parvovirus'),
+                        'Adenovirus' => __('Adenovirus'),
+                        'Leptospirosis' => __('Leptospirosis'),
+                        'Parainfluenza' => __('Parainfluenza'),
+                        'Bordetella' => __('Bordetella'),
+                        'Leucemia Felina' => __('Feline Leukemia'),
+                        'Panleucopenia' => __('Panleukopenia'),
+                        'Calicivirus' => __('Calicivirus'),
+                        'Rinotraqueítis Felina' => __('Feline Herpesvirus'),
+                        'Triple Felina' => __('FVRCP Vaccine'),
+                        'Lyme' => __('Lyme Disease'),
+                        'Gripe Canina' => __('Canine Influenza'),
+                        'Tos de las Perreras' => __('Kennel Cough'),
+                        'Coronavirus Canino' => __('Canine Coronavirus'),
+                        'Giardia' => __('Giardia'),
+                        'Rabia Recombinante' => __('Recombinant Rabies'),
+                        'Vacuna Antirrábica' => __('Anti-Rabies Vaccine'),
+                        'Herpesvirus Equino' => __('Equine Herpesvirus'),
+                        'Mixomatosis' => __('Myxomatosis'),
+                        'Enfermedad Hemorrágica Vírica' => __('Viral Haemorrhagic Disease'),
+                        'Vacuna Polivalente' => __('Polyvalent Vaccine'),
+                    ])
                     ->required(),
                 Forms\Components\DatePicker::make('application_date')
+                    ->translateLabel()
                     ->required()
                     ->native(false)
                     ->maxDate(now()),
                 Forms\Components\DatePicker::make('next_application')
+                    ->translateLabel()
+                    ->required()
                     ->native(false)
                     ->minDate(now()),
-                Forms\Components\TextInput::make('batch'),
-                Forms\Components\TextInput::make('manufacturer'),
+                Forms\Components\TextInput::make('batch')
+                    ->translateLabel()
+                    ->string()
+                    ->required(),
+                Forms\Components\Select::make('manufacturer')
+                    ->translateLabel()
+                    ->searchable()
+                    ->preload()
+                    ->live()
+                    ->options([
+                        'Zoetis' => __('Zoetis'),
+                        'MSD' => __('MSD'),
+                        'Elanco' => __('Elanco'),
+                        'Boehringer Ingelheim' => __('Boehringer Ingelheim'),
+                        'Merial' => __('Merial'),
+                        'Virbac' => __('Virbac'),
+                        'Ceva' => __('Ceva'),
+                        'Heska' => __('Heska'),
+                        'Bayer' => __('Bayer'),
+                        'Vetoquinol' => __('Vetoquinol'),
+                        'Phibro' => __('Phibro'),
+                        'Hipra' => __('Hipra'),
+                        'Biogénesis Bagó' => __('Biogénesis Bagó'),
+                        'Bioiberica' => __('Bioiberica'),
+                        'Syva' => __('Syva'),
+                        'IDT Biologika' => __('IDT Biologika'),
+                        'VECOL' => __('VECOL'),
+                        'Karnov' => __('Karnov'),
+                        'Labiana' => __('Labiana'),
+                    ])
+                    ->required(),
                 Forms\Components\Textarea::make('observation')
+                    ->translateLabel(),
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('vaccine')
             ->columns([
                 Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
                     ->searchable()
                     ->sortable()
                     ->numeric(),
                 Tables\Columns\TextColumn::make('vaccine')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('application_date')
+                    ->translateLabel()
                     ->date()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('next_application')
+                    ->translateLabel()
                     ->date()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('batch')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('manufacturer')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
