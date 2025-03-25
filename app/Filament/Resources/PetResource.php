@@ -20,13 +20,11 @@ class PetResource extends Resource
     protected static ?string $model = Pet::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $modelLabel = 'mascota';
-    protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-
                 Section::make(__('ID information'))
                     ->columns(3)
                     ->schema([
@@ -62,6 +60,8 @@ class PetResource extends Resource
                             ->translateLabel()
                             ->required()
                             ->native(false)
+                            ->displayFormat('d/m/Y')
+                            ->closeOnDateSelection()
                             ->minDate(now()->subYears(25))
                             ->maxDate(now()),
                         Forms\Components\Radio::make('gender')
@@ -73,6 +73,30 @@ class PetResource extends Resource
                             ])
                             ->inline()
                             ->inlineLabel(false),
+                        Forms\Components\Select::make('reproduction')
+                            ->translateLabel()
+                            ->searchable()
+                            ->preload()
+                            ->live()
+                            ->options([
+                                'Normal' => __('Normal'),
+                                'Castrated' => __('Castrated'),
+                                'Sterilized' => __('Sterilized'),
+                            ])
+                            ->required(),
+                        Forms\Components\Toggle::make('active')
+                            ->translateLabel()
+                            ->hiddenOn('create')
+                            ->onColor('success')
+                            ->offColor('danger')
+                            ->inline(false),
+                        Forms\Components\Select::make('owner_id')
+                            ->translateLabel()
+                            ->relationship('owner', 'full_name')
+                            ->searchable(['full_name', 'ci'])
+                            ->preload()
+                            ->live()
+                            ->required(),
                     ]),
 
                 Section::make(__('More information'))
@@ -103,29 +127,6 @@ class PetResource extends Resource
                             ->label(__('Pelage'))
                             ->string()
                             ->required(),
-                        Forms\Components\Radio::make('reproduction')
-                            ->translateLabel()
-                            ->required()
-                            ->options([
-                                'Normal' => __('Normal'),
-                                'Castrated' => __('Castrated'),
-                                'Sterilized' => __('Sterilized'),
-                            ])
-                            ->inline()
-                            ->inlineLabel(false),
-                        Forms\Components\Select::make('owner_id')
-                            ->translateLabel()
-                            ->relationship('owner', 'full_name')
-                            ->searchable(['full_name', 'ci'])
-                            ->preload()
-                            ->live()
-                            ->required(),
-                        Forms\Components\Toggle::make('active')
-                            ->label(__('Active'))
-                            ->hiddenOn('create')
-                            ->onColor('success')
-                            ->offColor('danger')
-                            ->inline(false),
                         Forms\Components\FileUpload::make('image')
                             ->translateLabel()
                             ->image()
@@ -148,7 +149,8 @@ class PetResource extends Resource
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('name')
                     ->translateLabel()
                     ->searchable()
@@ -161,41 +163,26 @@ class PetResource extends Resource
                     ->translateLabel()
                     ->searchable()
                     ->sortable(),
-                /* Tables\Columns\TextColumn::make('gender')
-                        ->searchable()
-                        ->sortable(),
-                    Tables\Columns\TextColumn::make('birthdate')
-                        ->date()
-                        ->sortable(),
-                    Tables\Columns\TextColumn::make('size')
-                        ->searchable()
-                        ->sortable(),
-                    Tables\Columns\TextColumn::make('weight')
-                        ->numeric()
-                        ->sortable()
-                        ->sortable(),
-                    Tables\Columns\TextColumn::make('fur')
-                        ->searchable()
-                        ->sortable(),
-                    Tables\Columns\TextColumn::make('reproduction')
-                        ->searchable()
-                        ->sortable(), */
                 Tables\Columns\IconColumn::make('active')
-                    ->label('Activo')
+                    ->translateLabel()
                     ->boolean()
                     ->sortable(),
-                /* Tables\Columns\TextColumn::make('owner.ci')
-                        ->numeric()
-                        ->sortable(),
-                    Tables\Columns\TextColumn::make('user.name')
-                        ->numeric()
-                        ->sortable(), */
+                Tables\Columns\TextColumn::make('owner.full_name')
+                    ->translateLabel()
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->translateLabel()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->translateLabel()
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->translateLabel()
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

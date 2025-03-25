@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\PetResource\RelationManagers;
 
+use App\Models\Pet;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -56,11 +58,15 @@ class VaccinationsRelationManager extends RelationManager
                     ->translateLabel()
                     ->required()
                     ->native(false)
+                    ->displayFormat('d/m/Y')
+                    ->closeOnDateSelection()
                     ->maxDate(now()),
                 Forms\Components\DatePicker::make('next_application')
                     ->translateLabel()
                     ->required()
                     ->native(false)
+                    ->displayFormat('d/m/Y')
+                    ->closeOnDateSelection()
                     ->minDate(now()),
                 Forms\Components\TextInput::make('batch')
                     ->translateLabel()
@@ -94,7 +100,8 @@ class VaccinationsRelationManager extends RelationManager
                     ])
                     ->required(),
                 Forms\Components\Textarea::make('observation')
-                    ->translateLabel(),
+                    ->translateLabel()
+                    ->autosize(),
             ]);
     }
 
@@ -113,12 +120,12 @@ class VaccinationsRelationManager extends RelationManager
                     ->sortable(),
                 Tables\Columns\TextColumn::make('application_date')
                     ->translateLabel()
-                    ->date()
+                    ->date('d/m/Y')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('next_application')
                     ->translateLabel()
-                    ->date()
+                    ->date('d/m/Y')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('batch')
@@ -136,12 +143,12 @@ class VaccinationsRelationManager extends RelationManager
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->translateLabel()
-                    ->dateTime()
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->translateLabel()
-                    ->dateTime()
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -154,6 +161,29 @@ class VaccinationsRelationManager extends RelationManager
                         $data['user_id'] = Auth::id();
                         return $data;
                     }),
+                Tables\Actions\Action::make('downloadVaccineCard')
+                    ->label(__('Descargar PDF'))
+                    ->color('success')
+                    ->action(function () {
+                        $pet = $this->getOwnerRecord(); // Obtenemos el Pet desde el contexto padre
+
+                        if (!$pet) {
+                            throw new \Exception('Mascota no encontrada');
+                        }
+
+                        return response()->streamDownload(
+                            function () use ($pet) {
+                                echo Pdf::loadView('pdf.vaccine-card', [
+                                    'pet' => $pet,
+                                    'vaccinations' => $pet->vaccinations // Accedemos a la relación
+                                ])->stream();
+                            },
+                            "Carnet-Vacunacion-{$pet->name}.pdf"
+                        );
+                    })
+                    ->requiresConfirmation()
+                    ->modalHeading('Generar carnet de vacunación')
+                    ->modalDescription('¿Desea descargar el PDF con el historial completo?'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

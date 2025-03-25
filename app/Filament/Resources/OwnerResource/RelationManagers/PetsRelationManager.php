@@ -57,6 +57,8 @@ class PetsRelationManager extends RelationManager
                             ->translateLabel()
                             ->required()
                             ->native(false)
+                            ->displayFormat('d/m/Y')
+                            ->closeOnDateSelection()
                             ->minDate(now()->subYears(25))
                             ->maxDate(now()),
                         Forms\Components\Radio::make('gender')
@@ -68,6 +70,23 @@ class PetsRelationManager extends RelationManager
                             ])
                             ->inline()
                             ->inlineLabel(false),
+                        Forms\Components\Select::make('reproduction')
+                            ->translateLabel()
+                            ->searchable()
+                            ->preload()
+                            ->live()
+                            ->options([
+                                'Normal' => __('Normal'),
+                                'Castrated' => __('Castrated'),
+                                'Sterilized' => __('Sterilized'),
+                            ])
+                            ->required(),
+                        Forms\Components\Toggle::make('active')
+                            ->translateLabel()
+                            ->hiddenOn('create')
+                            ->onColor('success')
+                            ->offColor('danger')
+                            ->inline(false),
                     ]),
 
                 Section::make(__('More information'))
@@ -98,17 +117,6 @@ class PetsRelationManager extends RelationManager
                             ->label(__('Pelage'))
                             ->string()
                             ->required(),
-                        Forms\Components\Radio::make('reproduction')
-                            ->translateLabel()
-                            ->required()
-                            ->columnSpanFull()
-                            ->options([
-                                'Normal' => __('Normal'),
-                                'Castrated' => __('Castrated'),
-                                'Sterilized' => __('Sterilized'),
-                            ])
-                            ->inline()
-                            ->inlineLabel(false),
                         Forms\Components\FileUpload::make('image')
                             ->translateLabel()
                             ->image()
@@ -117,12 +125,6 @@ class PetsRelationManager extends RelationManager
                             ->columnSpanFull()
                             ->uploadingMessage('Subiendo archivo adjunto...')
                             ->required(),
-                        Forms\Components\Toggle::make('active')
-                            ->translateLabel()
-                            ->hiddenOn('create')
-                            ->onColor('success')
-                            ->offColor('danger')
-                            ->inline(false),
                     ])
             ]);
     }
@@ -130,56 +132,39 @@ class PetsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
+                    ->translateLabel()
                     ->circular(),
                 Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('name')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('species')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('breed')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
-                /* Tables\Columns\TextColumn::make('gender')
-                        ->searchable()
-                        ->sortable(),
-                    Tables\Columns\TextColumn::make('birthdate')
-                        ->date()
-                        ->sortable(),
-                    Tables\Columns\TextColumn::make('size')
-                        ->searchable()
-                        ->sortable(),
-                    Tables\Columns\TextColumn::make('weight')
-                        ->numeric()
-                        ->sortable()
-                        ->sortable(),
-                    Tables\Columns\TextColumn::make('fur')
-                        ->searchable()
-                        ->sortable(),
-                    Tables\Columns\TextColumn::make('reproduction')
-                        ->searchable()
-                        ->sortable(), */
                 Tables\Columns\IconColumn::make('active')
+                    ->translateLabel()
                     ->boolean()
                     ->sortable(),
-                /* Tables\Columns\TextColumn::make('owner.ci')
-                        ->numeric()
-                        ->sortable(),
-                    Tables\Columns\TextColumn::make('user.name')
-                        ->numeric()
-                        ->sortable(), */
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->translateLabel()
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->translateLabel()
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

@@ -14,6 +14,7 @@ class NeighborhoodsRelationManager extends RelationManager
 {
     protected static string $relationship = 'neighborhoods';
     protected static ?string $modelLabel = 'barrio';
+    protected static ?string $title = 'Barrios';
 
     public function form(Form $form): Form
     {
@@ -21,6 +22,7 @@ class NeighborhoodsRelationManager extends RelationManager
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->translateLabel()
+                    ->autofocus()
                     ->required(),
             ]);
     }
@@ -28,11 +30,10 @@ class NeighborhoodsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('name')
-            ->heading(__('Neighborhoods'))
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
+                    ->numeric()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')

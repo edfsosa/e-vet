@@ -14,6 +14,7 @@ class CitiesRelationManager extends RelationManager
 {
     protected static string $relationship = 'cities';
     protected static ?string $modelLabel = 'ciudad';
+    protected static ?string $title = 'Ciudades';
 
     public function form(Form $form): Form
     {
@@ -32,11 +33,10 @@ class CitiesRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('name')
-            ->heading(__('Cities'))
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
+                    ->numeric()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')

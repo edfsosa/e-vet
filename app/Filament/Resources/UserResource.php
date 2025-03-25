@@ -27,8 +27,6 @@ class UserResource extends Resource
     protected static ?int $navigationSort = 2;
     protected static ?string $modelLabel = 'usuario';
 
-
-
     public static function form(Form $form): Form
     {
         return $form
@@ -39,6 +37,7 @@ class UserResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->translateLabel()
+                            ->string()
                             ->required(),
                         Forms\Components\TextInput::make('email')
                             ->email()
@@ -86,6 +85,7 @@ class UserResource extends Resource
 
                         Forms\Components\TextInput::make('address')
                             ->translateLabel()
+                            ->columnSpanFull()
                             ->required(),
                     ])
             ]);
@@ -98,7 +98,8 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('name')
                     ->translateLabel()
                     ->sortable()
@@ -107,19 +108,14 @@ class UserResource extends Resource
                     ->translateLabel()
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->label(__('Verified'))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label(__('Created'))
-                    ->dateTime()
+                    ->translateLabel()
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label(__('Updated'))
-                    ->dateTime()
+                    ->translateLabel()
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -128,6 +124,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

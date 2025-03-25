@@ -52,18 +52,10 @@ class ConsultationsRelationManager extends RelationManager
                     ->searchable()
                     ->sortable()
                     ->numeric(),
-                /* Tables\Columns\TextColumn::make('anamnesis')
-                    ->translateLabel()
-                    ->searchable()
-                    ->sortable(), */
                 Tables\Columns\TextColumn::make('diagnosis')
                     ->translateLabel()
                     ->searchable()
                     ->sortable(),
-                /* Tables\Columns\TextColumn::make('treatment')
-                    ->translateLabel()
-                    ->searchable()
-                    ->sortable(), */
                 Tables\Columns\TextColumn::make('user.name')
                     ->translateLabel()
                     ->searchable()
@@ -71,12 +63,12 @@ class ConsultationsRelationManager extends RelationManager
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->translateLabel()
-                    ->dateTime()
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->translateLabel()
-                    ->dateTime()
+                    ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

@@ -28,6 +28,7 @@ class CityResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->translateLabel()
+                    ->autofocus()
                     ->required(),
                 Forms\Components\TextInput::make('population')
                     ->translateLabel()
@@ -39,7 +40,6 @@ class CityResource extends Resource
                     ->searchable()
                     ->preload()
                     ->live()
-                    ->label(__('Department'))
                     ->translateLabel()
                     ->required(),
             ]);
@@ -51,6 +51,7 @@ class CityResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
+                    ->numeric()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
@@ -66,13 +67,11 @@ class CityResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label(__('Created'))
                     ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label(__('Updated'))
                     ->translateLabel()
                     ->dateTime()
                     ->sortable()
@@ -83,6 +82,7 @@ class CityResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
