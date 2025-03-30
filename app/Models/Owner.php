@@ -31,6 +31,12 @@ class Owner extends Model
         'address', // Dirección de residencia
     ];
 
+    public function getFullNameAttribute(): string
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+
+
     /**
      * Un dueño pertenece a un departamento.
      * Esta relación define que cada dueño está asociado con un departamento específico.
