@@ -23,7 +23,7 @@ return new class extends Migration
             $table->foreignId('city_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('neighborhood_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('address');
-            $table->string('full_name')->virtualAs('concat(first_name, \' \', last_name)');
+            $table->string('full_name')->storedAs("concat(first_name, ' ', last_name)");
             $table->timestamps();
         });
     }
