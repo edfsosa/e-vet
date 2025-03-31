@@ -29,7 +29,6 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->registration()
             ->passwordReset()
-            ->authGuard('web')
             ->spa()
             ->profile(isSimple: false)
             ->sidebarCollapsibleOnDesktop()
