@@ -92,8 +92,8 @@ class PetResource extends Resource
                             ->inline(false),
                         Forms\Components\Select::make('owner_id')
                             ->translateLabel()
-                            ->relationship('owner', 'name')
-                            ->searchable(['name', 'ci'])
+                            ->relationship('owner', 'first_name')
+                            ->searchable(['first_name', 'ci'])
                             ->preload()
                             ->live()
                             ->required(),
@@ -167,7 +167,7 @@ class PetResource extends Resource
                     ->translateLabel()
                     ->boolean()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('owner.name')
+                Tables\Columns\TextColumn::make('owner.first_name')
                     ->translateLabel()
                     ->searchable()
                     ->sortable(),
