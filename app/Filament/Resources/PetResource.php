@@ -92,8 +92,8 @@ class PetResource extends Resource
                             ->inline(false),
                         Forms\Components\Select::make('owner_id')
                             ->translateLabel()
-                            ->relationship('owner', 'full_name')
-                            ->searchable(['full_name', 'ci'])
+                            ->relationship('owner', 'name')
+                            ->searchable(['name', 'ci'])
                             ->preload()
                             ->live()
                             ->required(),
