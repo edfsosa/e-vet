@@ -167,7 +167,7 @@ class PetResource extends Resource
                     ->translateLabel()
                     ->boolean()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('owner.full_name')
+                Tables\Columns\TextColumn::make('owner.name')
                     ->translateLabel()
                     ->searchable()
                     ->sortable(),
